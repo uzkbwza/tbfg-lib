@@ -26,31 +26,35 @@ impl FGObject {
     }
 
     #[method]
-    pub fn copy_to(&self, #[base] _base: TRef<Reference>, instance: Variant) {
-        let instance = {
-            instance
-                .try_to_object::<Reference>()
-                .unwrap()
-        };
-
-        let instance = unsafe {
-            instance.assume_safe()
-        };
-
-        let instance = instance
-            .cast_instance::<FGObject>()
-            .unwrap();
-        
-        instance.map_mut(|p: &mut FGObject, _base| {
+    pub fn copy_to(&self, #[base] _base: TRef<Reference>, instance: Instance<FGObject, Shared>) {
+        instance.map_mut(|p: &mut FGObject, _base: TRef<Reference, Shared>| {
             p.obj = self.obj.clone();
             p.id = self.id;
-        }).unwrap();
-        // ...
+        });
     }
-        // instance.map_mut(|p: &mut FGObject, _base: TRef<Reference, Unique>| {
-        //     p.obj = self.obj.clone();
-        //     p.id = self.id;
-        // });
+
+    // #[method]
+    // pub fn copy_to(&self, #[base] _base: TRef<Reference>, instance: Variant) {
+    //     let instance = {
+    //         instance
+    //             .try_to_object::<Reference>()
+    //             .unwrap()
+    //     };
+
+    //     let instance = unsafe {
+    //         instance.assume_safe()
+    //     };
+
+    //     let instance = instance
+    //         .cast_instance::<FGObject>()
+    //         .unwrap();
+        
+    //     instance.map_mut(|p: &mut FGObject, _base| {
+    //         p.obj = self.obj.clone();
+    //         p.id = self.id;
+    //     }).unwrap();
+    //     // ...
+    // }
 
     #[method]
     pub fn set_gravity(&mut self, gravity: String) {
@@ -167,18 +171,8 @@ impl FGObject {
     }
 
     #[method]
-    pub fn apply_y_fric(&mut self, fric: String) {
-        self.obj.apply_y_fric(FixedNum::from_str(&fric).unwrap())
-    }
-
-    #[method]
     pub fn apply_grav(&mut self) {
         self.obj.apply_grav()
-    }
-
-    #[method]
-    pub fn apply_grav_custom(&mut self, grav: String, fall_speed: String) {
-        self.obj.apply_grav_custom(FixedNum::unwrapped_from_str(&grav), FixedNum::unwrapped_from_str(&fall_speed))
     }
 
     #[method]

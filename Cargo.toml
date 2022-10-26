@@ -10,3 +10,6 @@ crate-type = ["cdylib"]
 [dependencies]
 gdnative = { git = "https://github.com/Bromeon/godot-rust.git", branch = "feature/godot-3.5" }
 fixed = "1.19.0"
+fixed-sqrt = "0.2.5"
+cordic = "0.1.5"
+fixed_trigonometry = "0.4.3"

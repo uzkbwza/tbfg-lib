@@ -1,8 +1,23 @@
 use gdnative::prelude::*;
+use fixed_trigonometry::*;
+use atan::atan2;
 use super::utils::*;
+use fixed_sqrt::*;
 
-use std::ops::{Add, Sub, Mul, Div};
+use std::ops::{Add, Sub, Mul, Div, AddAssign, SubAssign, MulAssign, DivAssign};
 use std::cmp::PartialEq;
+
+#[derive(ToVariant, FromVariant, Clone, Debug)]
+pub struct FixedVec2String {
+    pub x: String,
+    pub y: String,
+}
+
+#[derive(ToVariant, FromVariant, Clone, Debug)]
+pub struct FixedVec2Int {
+    pub x: i32,
+    pub y: i32,
+}
 
 #[derive(Debug, Copy, Clone)]
 pub struct FixedVec2 {
@@ -15,11 +30,60 @@ impl FixedVec2 {
         FixedVec2::coords(0, 0)
     }
 
-    pub fn coords<T: SimNum>(x: T, y: T) -> Self {
+    pub fn coords<A: SimNum, B: SimNum>(x: A, y: B) -> Self {
         FixedVec2 {
             x: x.to_fixed(),
             y: y.to_fixed(),
         }
+    }
+
+    pub fn from_string(x: String, y: String) -> Self {
+        FixedVec2 {
+            x: FixedNum::unwrapped_from_str(&x),
+            y: FixedNum::unwrapped_from_str(&y),
+        }
+    }
+
+    pub fn to_string(&self) -> FixedVec2String    {
+        FixedVec2String {
+            x: self.x.to_string(),
+            y: self.y.to_string(),
+        }
+    }
+
+    pub fn to_int(&self) -> FixedVec2Int {
+        FixedVec2Int {
+            x: self.x.round().to_num(),
+            y: self.y.round().to_num()
+        }
+    }
+
+    pub fn length(&self) -> FixedNum {
+        (self.x.abs().powu(2) + self.y.abs().powu(2)).sqrt()
+    }
+
+    pub fn angle(&self) -> FixedNum {
+        atan2(self.y, self.x)
+    }
+
+    pub fn normalized(&self) -> Self {
+        let length = self.length();
+
+        Self {
+            x: if length > 0 { self.x / length } else { FixedNum::from_num(0) },
+            y: if length > 0 { self.y / length } else { FixedNum::from_num(0) },
+        }
+    }
+
+    pub fn round(&mut self) {
+        self.x = self.x.round();
+        self.y = self.y.round();
+    }
+
+    pub fn rounded(&self) -> Self {
+        let mut new = *self;
+        new.round();
+        new
     }
 }
 
@@ -75,7 +139,7 @@ impl Div<FixedVec2> for FixedVec2 {
     }
 }
 
-impl<T> Mul<T> for FixedVec2 where T: SimNum + Copy {
+impl<T> Mul<T> for FixedVec2 where T: SimNum {
     type Output = Self;
     fn mul(self, rhs: T) -> Self::Output {
         Self {
@@ -85,7 +149,7 @@ impl<T> Mul<T> for FixedVec2 where T: SimNum + Copy {
     }
 }
 
-impl<T> Div<T> for FixedVec2 where T: SimNum + Copy {
+impl<T> Div<T> for FixedVec2 where T: SimNum {
     type Output = Self;
     fn div(self, rhs: T) -> Self::Output {
         Self {
@@ -101,3 +165,56 @@ impl PartialEq<FixedVec2> for FixedVec2 {
     }
 }
 
+impl AddAssign<FixedVec2> for FixedVec2 {
+    fn add_assign(&mut self, other: Self) {
+        *self = Self {
+            x: self.x + other.x,
+            y: self.y + other.y,
+        };
+    }
+}
+
+impl SubAssign<FixedVec2> for FixedVec2 {
+    fn sub_assign(&mut self, other: Self) {
+        *self = Self {
+            x: self.x - other.x,
+            y: self.y - other.y,
+        };
+    }
+}
+
+impl MulAssign<FixedVec2> for FixedVec2 {
+    fn mul_assign(&mut self, other: Self) {
+        *self = Self {
+            x: self.x * other.x,
+            y: self.y * other.y,
+        };
+    }
+}
+
+impl<T> MulAssign<T> for FixedVec2 where T: SimNum {
+    fn mul_assign(&mut self, other: T) {
+        *self = Self {
+            x: self.x * other.to_fixed::<FixedNum>(),
+            y: self.y * other.to_fixed::<FixedNum>(),
+        };
+    }
+}
+
+impl DivAssign<FixedVec2> for FixedVec2 {
+    fn div_assign(&mut self, other: Self) {
+        *self = Self {
+            x: self.x / other.x,
+            y: self.y / other.y,
+        };
+    }
+}
+
+impl<T> DivAssign<T> for FixedVec2 where T: SimNum {
+    fn div_assign(&mut self, other: T) {
+        *self = Self {
+            x: self.x / other.to_fixed::<FixedNum>(),
+            y: self.y / other.to_fixed::<FixedNum>(),
+        };
+    }
+}
