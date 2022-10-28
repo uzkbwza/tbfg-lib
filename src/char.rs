@@ -98,8 +98,8 @@ impl FGObject {
     }
 
     #[method]
-    pub fn apply_pushback(&mut self) {
-        self.obj.apply_pushback();
+    pub fn apply_pushback(&mut self, dir: i32) {
+        self.obj.apply_pushback(dir);
     }
 
     #[method]

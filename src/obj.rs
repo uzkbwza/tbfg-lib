@@ -181,8 +181,8 @@ impl BaseObject {
         self.accel = FixedVec2::new();
     }
 
-    pub fn apply_pushback(&mut self) {
-        self.move_directly(self.get_relative_vec(FixedVec2::coords(self.pushback_vel, FixedNum::from_num(0))));
+    pub fn apply_pushback(&mut self, dir: i32) {
+        self.move_directly(FixedVec2::coords(self.pushback_vel * FixedNum::from_num(dir), FixedNum::from_num(0)));
         if self.pushback_vel.abs() > PUSHBACK_FRIC {
             self.pushback_vel -= PUSHBACK_FRIC * self.pushback_vel.sign()
         } else {
