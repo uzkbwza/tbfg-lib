@@ -130,6 +130,11 @@ impl FixedMath {
     }
 
     #[method]
+    fn vec_dist(&self, x1: String, y1: String, x2: String, y2: String) -> String {
+        (FixedVec2::from_string(x1, y1) - FixedVec2::from_string(x2, y2)).length().to_string()
+    }
+
+    #[method]
     fn deg2rad(&self, n: String) -> String {
         ((FixedNum::unwrapped_from_str(&n) * PI) / FixedNum::from_num(180)).to_string()
     }
