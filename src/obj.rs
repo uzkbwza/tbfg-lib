@@ -118,7 +118,7 @@ impl BaseObject {
         }
     }
 
-    pub fn apply_full_fric(&mut self, fric: FixedNum) {
+    pub fn apply_x_fric(&mut self, fric: FixedNum) {
         if self.vel.x.abs() > fric {
             self.vel.x -= self.vel.x * fric;
         }

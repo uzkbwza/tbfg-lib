@@ -165,6 +165,11 @@ impl FixedMath {
         self.lerp_simnum(FixedNum::unwrapped_from_str(&a), FixedNum::unwrapped_from_str(&b), FixedNum::unwrapped_from_str(&f)).to_string()
     }
 
+    #[method]
+    fn sign(&self, a: String) -> i32 {
+        FixedNum::unwrapped_from_str(&a).sign().to_num()
+    }
+
     fn lerp_simnum<T: SimNum>(&self, a: T, b: T, f: FixedNum) -> FixedNum {
         FixedNum::from_num(a) * (FixedNum::from_num(1) - FixedNum::from_num(f)) + (FixedNum::from_num(b) *  FixedNum::from_num(f))
     }

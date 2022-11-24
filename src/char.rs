@@ -162,8 +162,8 @@ impl FGObject {
     }
 
     #[method]
-    pub fn apply_full_fric(&mut self, fric: String) {
-        self.obj.apply_full_fric(FixedNum::from_str(&fric).unwrap())
+    pub fn apply_x_fric(&mut self, fric: String) {
+        self.obj.apply_x_fric(FixedNum::from_str(&fric).unwrap())
     }
 
     #[method]
