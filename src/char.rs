@@ -103,6 +103,11 @@ impl FGObject {
     }
 
     #[method]
+    pub fn reset_pushback(&mut self) {
+        self.obj.reset_pushback();
+    }
+
+    #[method]
     pub fn set_vel(&mut self, x: String, y: String) {
         self.obj.set_vel(FixedVec2::from_string(x, y));
     }

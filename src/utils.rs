@@ -160,9 +160,22 @@ impl FixedMath {
         self.lerp_simnum(FixedNum::unwrapped_from_str(&a), FixedNum::unwrapped_from_str(&b), FixedNum::from_num(f) / FixedNum::from_num(max)).to_num()
     }
 
+
+
     #[method]
     fn lerp_string(&self, a: String, b: String, f: String) -> String {
         self.lerp_simnum(FixedNum::unwrapped_from_str(&a), FixedNum::unwrapped_from_str(&b), FixedNum::unwrapped_from_str(&f)).to_string()
+    }
+
+    #[method]
+    fn lerp_angle(&self, from: String, to: String, weight: String) -> String {
+        (FixedNum::unwrapped_from_str(&from) + self.short_angle_dist(FixedNum::unwrapped_from_str(&from), FixedNum::unwrapped_from_str(&to)) * FixedNum::unwrapped_from_str(&weight)).to_string()
+    }
+
+    fn short_angle_dist(&self, from: FixedNum, to: FixedNum) -> FixedNum {
+        let max_angle = PI * 2;
+        let difference = (to - from) % max_angle;
+        ((2 * difference) % (max_angle)) - difference
     }
 
     #[method]
@@ -215,6 +228,12 @@ impl FixedMath {
     #[method]
     fn eq(&self, x: String, y: String) -> bool {
         FixedNum::unwrapped_from_str(&x) == FixedNum::unwrapped_from_str(&y)
+    }
+
+
+    #[method]
+    fn abs(&self, n: String) -> String {
+        FixedNum::unwrapped_from_str(&n).abs().to_string()
     }
 
     // fn get_x_intercept_to_int(

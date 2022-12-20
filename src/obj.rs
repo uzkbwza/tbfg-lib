@@ -5,6 +5,7 @@ use super::utils::*;
 
 const PUSHBACK_FRIC: FixedNum = FixedNum::unwrapped_from_str("0.55");
 const MAX_PUSHBACK: FixedNum = FixedNum::unwrapped_from_str("10");
+const MIN_SPEED: FixedNum = FixedNum::unwrapped_from_str("0.0001");
 
 #[derive(ToVariant, FromVariant, Clone)]
 pub struct BaseObjectData {
@@ -147,6 +148,10 @@ impl BaseObject {
         self.vel.x -= (self.vel.x.abs() / self.max_ground_speed) * self.ground_friction * self.vel.x.sign()
     }
 
+    pub fn reset_pushback(&mut self) {
+        self.pushback_vel = FixedNum::from_num(0);
+    }
+
     pub fn apply_grav(&mut self) {
         if !self.grounded && self.vel.y < self.max_fall_speed {
             self.apply_force(FixedVec2::coords(FixedNum::from_num(0), self.gravity))
@@ -178,6 +183,9 @@ impl BaseObject {
         if self.grounded && self.vel.y > 0 {
             self.vel.y *= 0;
         }
+        if self.vel.length() < MIN_SPEED {
+            self.vel = FixedVec2::new();
+        }
         self.accel = FixedVec2::new();
     }
 
@@ -204,7 +212,6 @@ impl BaseObject {
         self.vel = FixedVec2::new();
         self.accel = FixedVec2::new();
     }
-
 
     pub fn update_grounded(&mut self) {
         self.set_grounded(self.pos.y >= 0)
