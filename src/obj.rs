@@ -18,6 +18,7 @@ pub struct BaseObjectData {
     vel_y: String,
     facing: isize,
     grounded: bool,
+    snap_to_ground: bool,
 }
 
 #[derive(ToVariant, FromVariant, Clone, Copy, Debug)]
@@ -42,6 +43,7 @@ pub struct BaseObject {
     pub max_ground_speed: FixedNum,
     pub max_air_speed: FixedNum,
     pub max_fall_speed: FixedNum,
+    pub snap_to_ground: bool,
 }
 
 impl Default for BaseObject {
@@ -66,6 +68,7 @@ impl BaseObject {
             max_ground_speed: FixedNum::from_num(1),
             max_air_speed: FixedNum::from_num(1),
             max_fall_speed: FixedNum::from_num(1),
+            snap_to_ground: true,
         }
     }
 
@@ -78,6 +81,7 @@ impl BaseObject {
             vel_y: self.vel.y.to_string(),
             facing: self.facing as isize,
             grounded: self.grounded,
+            snap_to_ground: self.snap_to_ground,
         }
     }
 
@@ -245,9 +249,17 @@ impl BaseObject {
 
     pub fn set_position(&mut self, point: FixedVec2) {
         self.pos = point;
-        if self.pos.y >= 0 {
+        if self.snap_to_ground && self.pos.y >= 0 {
             self.pos.y *= 0;
         };
         // self.pos.round()
+    }
+
+    pub fn get_snap_to_ground(&self) -> bool {
+        self.snap_to_ground
+    }
+
+    pub fn set_snap_to_ground(&mut self, snap: bool) {
+        self.snap_to_ground = snap
     }
 }

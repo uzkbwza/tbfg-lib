@@ -172,6 +172,12 @@ impl FixedMath {
         (FixedNum::unwrapped_from_str(&from) + self.short_angle_dist(FixedNum::unwrapped_from_str(&from), FixedNum::unwrapped_from_str(&to)) * FixedNum::unwrapped_from_str(&weight)).to_string()
     }
 
+
+    #[method]
+    fn angle_dist(&self, angle1: String, angle2: String) -> String {
+        short_angle_dist(FixedNum::unwrapped_from_str(&angle1), FixedNum::unwrapped_from_str(&angle2))
+    }
+
     fn short_angle_dist(&self, from: FixedNum, to: FixedNum) -> FixedNum {
         let max_angle = PI * 2;
         let difference = (to - from) % max_angle;

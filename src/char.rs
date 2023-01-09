@@ -252,4 +252,14 @@ impl FGObject {
     pub fn reset_momentum(&mut self) {
         self.obj.reset_momentum()
     }
+
+    #[method]
+    pub fn get_snap_to_ground(&self) -> bool {
+        self.obj.snap_to_ground
+    }
+
+    #[method]
+    pub fn set_snap_to_ground(&mut self, snap: bool) {
+        self.obj.set_snap_to_ground(snap)
+    }
 }
