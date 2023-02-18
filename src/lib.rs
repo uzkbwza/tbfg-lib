@@ -4,7 +4,6 @@ pub mod char;
 pub mod obj;
 pub mod utils;
 pub mod point;
-pub mod proj;
 
 // Function that registers all exposed classes to Godot
 fn init(handle: InitHandle) {
