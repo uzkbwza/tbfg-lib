@@ -44,6 +44,7 @@ pub struct BaseObject {
     pub max_air_speed: FixedNum,
     pub max_fall_speed: FixedNum,
     pub snap_to_ground: bool,
+    pub gravity_modifier: FixedNum,
 }
 
 impl Default for BaseObject {
@@ -69,6 +70,7 @@ impl BaseObject {
             max_air_speed: FixedNum::from_num(1),
             max_fall_speed: FixedNum::from_num(1),
             snap_to_ground: true,
+            gravity_modifier: FixedNum::from_num(1),
         }
     }
 
@@ -158,13 +160,13 @@ impl BaseObject {
 
     pub fn apply_grav(&mut self) {
         if !self.grounded && self.vel.y < self.max_fall_speed {
-            self.apply_force(FixedVec2::coords(FixedNum::from_num(0), self.gravity))
+            self.apply_force(FixedVec2::coords(FixedNum::from_num(0), self.gravity * self.gravity_modifier))
         }
     }
 
     pub fn apply_grav_custom(&mut self, gravity: FixedNum, fall_speed: FixedNum) {
         if !self.grounded && self.vel.y < fall_speed {
-            self.apply_force(FixedVec2::coords(FixedNum::from_num(0), gravity))
+            self.apply_force(FixedVec2::coords(FixedNum::from_num(0), gravity * self.gravity_modifier))
         }
     }
 

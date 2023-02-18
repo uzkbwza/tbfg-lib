@@ -62,6 +62,10 @@ impl FixedVec2 {
         (self.x.abs().powu(2) + self.y.abs().powu(2)).sqrt()
     }
 
+    pub fn length_squared(&self) -> FixedNum {
+        self.x.abs().powu(2) + self.y.abs().powu(2)
+    }
+
     pub fn angle(&self) -> FixedNum {
         atan2(self.y, self.x)
     }

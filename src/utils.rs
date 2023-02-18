@@ -110,6 +110,12 @@ impl FixedMath {
     }
 
     #[method]
+    fn vec_len_squared(&self, x: String, y: String) -> String {
+        let vec = FixedVec2::from_string(x, y);
+        vec.length_squared().to_string()
+    }
+
+    #[method]
     fn vec_to_angle(&self, x: String, y: String) -> String {
         let vec = FixedVec2::from_string(x, y);
         vec.angle().to_string()
@@ -132,6 +138,11 @@ impl FixedMath {
     #[method]
     fn vec_dist(&self, x1: String, y1: String, x2: String, y2: String) -> String {
         (FixedVec2::from_string(x1, y1) - FixedVec2::from_string(x2, y2)).length().to_string()
+    }
+
+    #[method]
+    fn vec_dist_squared(&self, x1: String, y1: String, x2: String, y2: String) -> String {
+        (FixedVec2::from_string(x1, y1) - FixedVec2::from_string(x2, y2)).length_squared().to_string()
     }
 
     #[method]
@@ -175,7 +186,7 @@ impl FixedMath {
 
     #[method]
     fn angle_dist(&self, angle1: String, angle2: String) -> String {
-        short_angle_dist(FixedNum::unwrapped_from_str(&angle1), FixedNum::unwrapped_from_str(&angle2))
+        self.short_angle_dist(FixedNum::unwrapped_from_str(&angle1), FixedNum::unwrapped_from_str(&angle2)).to_string()
     }
 
     fn short_angle_dist(&self, from: FixedNum, to: FixedNum) -> FixedNum {

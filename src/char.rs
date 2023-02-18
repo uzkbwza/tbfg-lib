@@ -207,6 +207,16 @@ impl FGObject {
     pub fn set_x(&mut self, x: i32) {
         self.obj.pos.x = FixedNum::from_num(x);
     }
+    
+    #[method]
+    pub fn set_gravity_modifier(&mut self, x: String) {
+        self.obj.gravity_modifier = FixedNum::unwrapped_from_str(&x);
+    }
+
+    #[method]
+    pub fn set_y(&mut self, y: i32) {
+        self.obj.pos.y = FixedNum::from_num(y);
+    }
 
     #[method]
     pub fn set_position_str(&mut self, x: String, y: String) {
