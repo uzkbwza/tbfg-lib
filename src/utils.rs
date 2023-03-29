@@ -122,6 +122,15 @@ impl FixedMath {
     }
 
     #[method]
+    fn vec_dot(&self, x1: String, y1: String, x2: String, y2: String) -> String {
+        let x1 = FixedNum::unwrapped_from_str(&x1);
+        let y1 = FixedNum::unwrapped_from_str(&y1);
+        let x2 = FixedNum::unwrapped_from_str(&x2);
+        let y2 = FixedNum::unwrapped_from_str(&y2);
+        (x1 * x2 + y1 * y2).to_string()
+    }
+
+    #[method]
     fn angle_to_vec(&self, t: String) -> FixedVec2String {
         let t = FixedNum::unwrapped_from_str(&t);
         FixedVec2::coords(cos(t), sin(t)).to_string()
