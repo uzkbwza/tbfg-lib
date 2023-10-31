@@ -4,12 +4,14 @@ pub mod char;
 pub mod obj;
 pub mod utils;
 pub mod point;
+pub mod methods;
 
 // Function that registers all exposed classes to Godot
 fn init(handle: InitHandle) {
     // Register the new `HelloWorld` type we just declared.
     handle.add_class::<char::FGObject>();
     handle.add_class::<utils::FixedMath>();
+    handle.add_class::<methods::NativeMethods>();
 }
 
 godot_init!(init);
